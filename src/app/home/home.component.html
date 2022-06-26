@@ -1,0 +1,138 @@
+
+<link rel="stylesheet" href="home.component.css">
+<nav class="flex py-4 bg-black text-white">
+  <div class="w-1/2 px-12 mr-auto">
+    <p class="text-2xl font-bold">My app</p>
+  </div>
+  <ul class="w-1/2 px-16 ml-auto flex justify-end pt-1">
+
+    <li>
+      <p>{{email}}</p>
+    </li>
+    <li class="mx-6">
+      <a routerLink="/login" class=" text-white font-semibold hover:text-gray px-4 py-3">Log in</a>
+    </li>
+    <li>
+      <a routerLink="/register"  class=" text-white font-semibold  hover:text-gray  px-4 py-3">Registro</a>
+    </li>
+
+    <li>
+      <a (click)="logout()" href="#" role="button"  class=" text-white font-semibold bg-red-500  hover:ng-red-800  px-4 py-3">Log out</a>
+    </li>
+
+  </ul>
+
+</nav>
+
+<table class="table">
+  <thead>
+  <tr >
+    <th scope="col">Nombre</th>
+    <th scope="col">Email</th>
+    <th scope="col">Id</th>
+    <th scope="col">Usuario</th>
+    <th scope="col">Tlf</th>
+    <th scope="col">Dni</th>
+    <th scope="col">Contraseña</th>
+    <th scope="col">Acciones</th>
+  </tr>
+  </thead>
+  <tbody id="body" >
+  <tr contenteditable="true" *ngFor="let user of contact;">
+
+    <td >{{user.name}}</td>
+    <td >{{user.email}}</td>
+    <td>{{user.id}}</td>
+    <td >{{user.user}}</td>
+    <td >{{user.tlf}}</td>
+    <td >{{user.dni}}</td>
+    <td >{{user.password}}</td>
+
+
+    <td><button id="mod" value="{{user.id}}"  (click)="openPopup()" class="btn btn-primary text-white" type="button"  data-mdb-toggle="modal" data-mdb-target="#exampleModal">Modificar</button><button (click)="eliminar(user.id)" class="btn btn-danger text-white">Eliminar</button></td>
+
+  </tr>
+
+  </tbody>
+</table>
+
+<form class="mt-4"  (ngSubmit)="modificar()" [formGroup]="form">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Actualizar</h4>
+      </div>
+      <div class="modal-body" style="overflow:scroll">
+
+
+
+            <input type="text" formControlName="user" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Usuario" id="user" name="user">
+            <div *ngIf="form.controls['user'].errors">
+              <p *ngIf="form.controls['user'].errors['required']" class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-2 mx-2" >Usuario es requerido</p>
+            </div>
+
+
+            <input type="password" formControlName="password" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Contraseña" id="password" name="password" >
+            <div *ngIf="form.controls['password'].errors">
+              <p *ngIf="form.controls['password'].errors['required']" class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-2 mx-2" >Contraseña es requerida</p>
+              <p *ngIf="form.controls['password'].errors['minlength']" class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-2 mx-2"  >Contraseña con formato invalido</p>
+            </div>
+
+
+
+            <input formControlName="password_confirmation"  type="password" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Confirmación Contraseña" id="passwor_confirmation" name='passwor_confirmation'>
+            <div *ngIf="form.controls['password_confirmation'].errors">
+              <p *ngIf="form.controls['password_confirmation'].errors['required']" class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-2 mx-2" >Es requerida la confirmación de la contraseña</p>
+              <p *ngIf="form.controls['password_confirmation'].errors['Mustmatch']" class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-2 mx-2"  >Contraseñas deben coincidir</p>
+
+            </div>
+
+
+            <input formControlName="name" type="text" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Nombre" id="name" name="name" >
+            <div *ngIf="form.controls['name'].errors">
+              <p *ngIf="form.controls['name'].errors['required']" class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-2 mx-2" >Nombre es requerido</p>
+            </div>
+
+
+            <input type="text" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Nif/Dni" id="dni" name="dni" formControlName="dni">
+            <div *ngIf="form.controls['dni'].errors">
+              <p *ngIf="form.controls['dni'].errors['required']" class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-2 mx-2" >Dni es requerido</p>
+            </div>
+
+            <input type="text" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Tlf" id="tlf" name="tlf" formControlName="tlf">
+            <div *ngIf="form.controls['tlf'].errors">
+              <p *ngIf="form.controls['tlf'].errors['required']" class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-2 mx-2" >Tlf es requerido</p>
+              <p *ngIf="form.controls['tlf'].errors['maxlength']" class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-2 mx-2" >Tlf debe contener 9 dígitos</p>
+              <p *ngIf="form.controls['tlf'].errors['minlength']" class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-2 mx-2" >Tlf debe contener 9 dígitos</p>
+
+            </div>
+
+
+            <input type="email" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Email" id="email" name="email" formControlName="email" >
+            <div *ngIf="form.controls['email'].errors">
+              <p *ngIf="form.controls['email'].errors['email']" class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-2 mx-2" >Email invalido</p>
+              <p *ngIf="form.controls['email'].errors['required']" class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-2 mx-2" >Email es requerido</p>
+            </div>
+
+
+
+
+                <button type="button" class="btn btn-danger"
+                                 (click)="closePopup()">
+        Close
+      </button>
+        <button type="submit" class="btn btn-info"  [disabled]="form.invalid">
+          Guardar
+        </button>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+      </div>
+
+    </div>
+</div>
+</form>
